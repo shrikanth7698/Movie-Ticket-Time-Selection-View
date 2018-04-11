@@ -5,6 +5,7 @@ import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 
 import com.shrikanthravi.timeselectionview.R;
 import com.shrikanthravi.timeselectionview.data.MovieTime;
+import com.shrikanthravi.timeselectionview.view.VerticalProgressbar;
 
 import java.util.List;
 
@@ -28,7 +30,8 @@ public class TimeSelectionAdapter extends RecyclerView.Adapter<RecyclerView.View
     Context context;
     public static int selectedpos=-1;
     public static ProgressBar selectedprogressBar = null;
-
+    public static float normalSize = 15;
+    public static float bigSize = 18;
 
     public  class MovieTimeHolder extends RecyclerView.ViewHolder {
 
@@ -41,6 +44,7 @@ public class TimeSelectionAdapter extends RecyclerView.Adapter<RecyclerView.View
             progressBar = view.findViewById(R.id.seatsProgress);
 
         }
+
     }
 
     public TimeSelectionAdapter(List<MovieTime> verticalList, Context context) {
@@ -70,19 +74,21 @@ public class TimeSelectionAdapter extends RecyclerView.Adapter<RecyclerView.View
         movieTimeHolder.movieTimeTV.setText(movieTime.getTime());
         movieTimeHolder.progressBar.setMax(movieTime.getTotalSeats());
         float percent = ((float)(movieTime.getAvailableSeats()))/(float) movieTime.getTotalSeats();
-        System.out.println("color Testing "+((float) percent*100));
+        System.out.println("color Testing "+movieTimeHolder.movieTimeTV.getTextSize());
+
 
         movieTimeHolder.progressBar.setProgress(movieTime.getTotalSeats()-movieTime.getAvailableSeats());
         if(movieTime.isSelected()){
             movieTimeHolder.progressBar.setProgressTintList(ColorStateList.valueOf(interpolateColor(context.getResources().getColor(R.color.red),context.getResources().getColor(R.color.green),percent)));
-
-            movieTimeHolder.movieTimeTV.setTextColor(interpolateColor(context.getResources().getColor(R.color.red),context.getResources().getColor(R.color.green),percent));
-            //movieTimeHolder.movieTimeTV.setTextSize(movieTimeHolder.movieTimeTV.getTextSize()+10);
+            movieTimeHolder.movieTimeTV.setTextColor(context.getResources().getColor(android.R.color.black));
+            movieTimeHolder.progressBar.setBackground(context.getDrawable(R.drawable.progress_bg_selected));
+            //movieTimeHolder.movieTimeTV.setTextSize(TypedValue.COMPLEX_UNIT_SP,bigSize);
         }
         else{
             movieTimeHolder.progressBar.setProgressTintList(ColorStateList.valueOf(interpolateColor(context.getResources().getColor(R.color.red),context.getResources().getColor(R.color.green),percent)));
-
-            //movieTimeHolder.movieTimeTV.setTextColor(interpolateColor(context.getResources().getColor(R.color.red),context.getResources().getColor(R.color.green),percent));
+            movieTimeHolder.movieTimeTV.setTextColor(context.getResources().getColor(android.R.color.tab_indicator_text));
+            movieTimeHolder.progressBar.setBackground(context.getDrawable(R.drawable.progress_bg));
+            //movieTimeHolder.movieTimeTV.setTextSize(TypedValue.COMPLEX_UNIT_SP,normalSize);
         }
         movieTimeHolder.progressBar.setOnClickListener(new View.OnClickListener() {
             @Override
