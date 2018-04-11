@@ -2,6 +2,7 @@ package com.shrikanthravi.timeselectionview.adapters;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -68,19 +69,20 @@ public class TimeSelectionAdapter extends RecyclerView.Adapter<RecyclerView.View
         final MovieTimeHolder movieTimeHolder = ((MovieTimeHolder) holder);
         movieTimeHolder.movieTimeTV.setText(movieTime.getTime());
         movieTimeHolder.progressBar.setMax(movieTime.getTotalSeats());
-
+        float percent = ((float)(movieTime.getAvailableSeats()))/(float) movieTime.getTotalSeats();
+        System.out.println("color Testing "+((float) percent*100));
 
         movieTimeHolder.progressBar.setProgress(movieTime.getTotalSeats()-movieTime.getAvailableSeats());
         if(movieTime.isSelected()){
-            movieTimeHolder.progressBar.setProgressTintList(ColorStateList.valueOf(context.getResources().getColor(R.color.colorPrimary)));
-            movieTimeHolder.movieTimeTV.setTextColor(context.getResources().getColor(android.R.color.black));
+            movieTimeHolder.progressBar.setProgressTintList(ColorStateList.valueOf(interpolateColor(context.getResources().getColor(R.color.red),context.getResources().getColor(R.color.green),percent)));
+
+            movieTimeHolder.movieTimeTV.setTextColor(interpolateColor(context.getResources().getColor(R.color.red),context.getResources().getColor(R.color.green),percent));
             //movieTimeHolder.movieTimeTV.setTextSize(movieTimeHolder.movieTimeTV.getTextSize()+10);
         }
         else{
-            movieTimeHolder.progressBar.setProgressTintList(ColorStateList.valueOf(context.getResources().getColor(android.R.color.tab_indicator_text)));
-            movieTimeHolder.movieTimeTV.setTextColor(context.getResources().getColor(android.R.color.tab_indicator_text));
-            //movieTimeHolder.movieTimeTV.setTextSize(movieTimeHolder.movieTimeTV.getTextSize()-10);
+            movieTimeHolder.progressBar.setProgressTintList(ColorStateList.valueOf(interpolateColor(context.getResources().getColor(R.color.red),context.getResources().getColor(R.color.green),percent)));
 
+            //movieTimeHolder.movieTimeTV.setTextColor(interpolateColor(context.getResources().getColor(R.color.red),context.getResources().getColor(R.color.green),percent));
         }
         movieTimeHolder.progressBar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -118,6 +120,36 @@ public class TimeSelectionAdapter extends RecyclerView.Adapter<RecyclerView.View
         return movieTimeList.size();
     }
 
+    private float interpolate(final float a, final float b,
+                              final float proportion) {
+        return (a + ((b - a) * proportion));
+    }
 
+    /**
+     * Returns an interpolated color, between <code>a</code> and <code>b</code>
+     * proportion = 0, results in color a
+     * proportion = 1, results in color b
+     */
+    private int interpolateColor(int a, int b, float proportion) {
+
+        if (proportion > 1 || proportion < 0) {
+            throw new IllegalArgumentException("proportion must be [0 - 1]");
+        }
+        float[] hsva = new float[3];
+        float[] hsvb = new float[3];
+        float[] hsv_output = new float[3];
+
+        Color.colorToHSV(a, hsva);
+        Color.colorToHSV(b, hsvb);
+        for (int i = 0; i < 3; i++) {
+            hsv_output[i] = interpolate(hsva[i], hsvb[i], proportion);
+        }
+
+        int alpha_a = Color.alpha(a);
+        int alpha_b = Color.alpha(b);
+        float alpha_output = interpolate(alpha_a, alpha_b, proportion);
+
+        return Color.HSVToColor((int) alpha_output, hsv_output);
+    }
 }
 

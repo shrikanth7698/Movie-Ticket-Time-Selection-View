@@ -63,7 +63,7 @@ public class TimeSelectionView extends RecyclerView{
         movieTimeList.add(new MovieTime("7:00 am",300,250));
         movieTimeList.add(new MovieTime("11:00 am",300,120));
         movieTimeList.add(new MovieTime("3:00 pm",300,60));
-        movieTimeList.add(new MovieTime("6:45 pm",300,50));
+        movieTimeList.add(new MovieTime("6:45 pm",300,5));
         movieTimeList.add(new MovieTime("10:00 pm",300,170));
         timeSelectionAdapter.notifyDataSetChanged();
 
