@@ -1,4 +1,11 @@
 apply plugin: 'com.android.library'
+apply plugin: 'com.github.dcendents.android-maven'
+group = 'com.github.shrikanth7698'
+ext {
+    PUBLISH_GROUP_ID = 'com.github.shrikanth7698'
+    PUBLISH_ARTIFACT_ID = 'Time-Selection-View'
+    PUBLISH_VERSION = '1.0'
+}
 
 android {
     compileSdkVersion 27

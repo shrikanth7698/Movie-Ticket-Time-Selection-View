@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="TimeSelectionView">
+        <attr name="TimeTextColor" format="color"/>
+        <attr name="SeatProgressTintColor" format="color"/>
+
+    </declare-styleable>
+</resources>

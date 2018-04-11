@@ -6,11 +6,10 @@ public class MovieTime {
     int availableSeats;
     boolean selected=false;
 
-    public MovieTime(String time, int totalSeats, int availableSeats, boolean selected) {
+    public MovieTime(String time, int totalSeats, int availableSeats) {
         this.time = time;
         this.totalSeats = totalSeats;
         this.availableSeats = availableSeats;
-        this.selected = selected;
     }
 
     public String getTime() {

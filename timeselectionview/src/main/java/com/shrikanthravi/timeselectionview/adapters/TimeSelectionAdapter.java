@@ -69,21 +69,18 @@ public class TimeSelectionAdapter extends RecyclerView.Adapter<RecyclerView.View
         movieTimeHolder.movieTimeTV.setText(movieTime.getTime());
         movieTimeHolder.progressBar.setMax(movieTime.getTotalSeats());
 
-        Typeface font = Typeface.createFromAsset(context.getAssets(), "fonts/product_san_regular.ttf");
-        Typeface bold = Typeface.createFromAsset(context.getAssets(), "fonts/product_sans_bold.ttf");
-
-        movieTimeHolder.movieTimeTV.setTypeface(font);
 
         movieTimeHolder.progressBar.setProgress(movieTime.getTotalSeats()-movieTime.getAvailableSeats());
         if(movieTime.isSelected()){
-            movieTimeHolder.progressBar.setProgressTintList(ColorStateList.valueOf(context.getResources().getColor(android.R.color.holo_red_light)));
+            movieTimeHolder.progressBar.setProgressTintList(ColorStateList.valueOf(context.getResources().getColor(R.color.colorPrimary)));
             movieTimeHolder.movieTimeTV.setTextColor(context.getResources().getColor(android.R.color.black));
-            movieTimeHolder.movieTimeTV.setTypeface(bold);
+            //movieTimeHolder.movieTimeTV.setTextSize(movieTimeHolder.movieTimeTV.getTextSize()+10);
         }
         else{
             movieTimeHolder.progressBar.setProgressTintList(ColorStateList.valueOf(context.getResources().getColor(android.R.color.tab_indicator_text)));
             movieTimeHolder.movieTimeTV.setTextColor(context.getResources().getColor(android.R.color.tab_indicator_text));
-            movieTimeHolder.movieTimeTV.setTypeface(font);
+            //movieTimeHolder.movieTimeTV.setTextSize(movieTimeHolder.movieTimeTV.getTextSize()-10);
+
         }
         movieTimeHolder.progressBar.setOnClickListener(new View.OnClickListener() {
             @Override
