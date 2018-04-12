@@ -9,6 +9,7 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.PopupWindow;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -18,6 +19,7 @@ import com.shrikanthravi.timeselectionview.data.MovieTime;
 import com.shrikanthravi.timeselectionview.view.VerticalProgressbar;
 
 import java.util.List;
+import java.util.logging.Handler;
 
 /**
  * Created by shrikanthravi on 01/03/18.
@@ -26,7 +28,7 @@ import java.util.List;
 
 public class TimeSelectionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private List<MovieTime> movieTimeList;
+    private static List<MovieTime> movieTimeList;
     Context context;
     public static int selectedpos=-1;
     public static ProgressBar selectedprogressBar = null;
@@ -100,17 +102,48 @@ public class TimeSelectionAdapter extends RecyclerView.Adapter<RecyclerView.View
                 }
                 else{
                     if(selectedpos>=0) {
-                        movieTimeList.get(position).setSelected(true);
-                        movieTimeList.get(selectedpos).setSelected(false);
-
-                        notifyItemChanged(position);
-                        notifyItemChanged(selectedpos);
-                        selectedpos = position;
+                        if(movieTime.getAvailableSeats()!=0){
+                            movieTimeList.get(position).setSelected(true);
+                            movieTimeList.get(selectedpos).setSelected(false);
+                            notifyItemChanged(position);
+                            notifyItemChanged(selectedpos);
+                            selectedpos = position;
+                        }
+                        else{
+                            final PopupWindow mPopupwindow;
+                            LayoutInflater mInflater = (LayoutInflater) context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
+                            View mView = mInflater.inflate(R.layout.full_layout,null,false);
+                            mPopupwindow = new PopupWindow(mView, 300, 300, true);
+                            mPopupwindow.showAsDropDown(movieTimeHolder.movieTimeTV,movieTimeHolder.progressBar.getWidth()/2,movieTimeHolder.progressBar.getHeight()+10);
+                            android.os.Handler handler = new android.os.Handler();
+                            handler.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    mPopupwindow.dismiss();
+                                }
+                            },3000);
+                        }
                     }
                     else{
-                        movieTimeList.get(position).setSelected(true);
-                        notifyItemChanged(position);
-                        selectedpos = position;
+                        if(movieTime.getAvailableSeats()!=0) {
+                            movieTimeList.get(position).setSelected(true);
+                            notifyItemChanged(position);
+                            selectedpos = position;
+                        }
+                        else{
+                            final PopupWindow mPopupwindow;
+                            LayoutInflater mInflater = (LayoutInflater) context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
+                            View mView = mInflater.inflate(R.layout.full_layout,null,false);
+                            mPopupwindow = new PopupWindow(mView, mView.getWidth(), mView.getHeight(), true);
+                            mPopupwindow.showAsDropDown(movieTimeHolder.movieTimeTV,movieTimeHolder.progressBar.getWidth()/2,movieTimeHolder.progressBar.getHeight()+10);
+                            android.os.Handler handler = new android.os.Handler();
+                            handler.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    mPopupwindow.dismiss();
+                                }
+                            },3000);
+                        }
                     }
                 }
 
