@@ -23,7 +23,6 @@ public class MainActivity extends AppCompatActivity {
 
         TimeSelectionView timeSelectionView = findViewById(R.id.timeSelectionView);
 
-
         movieTimeList.add(new MovieTime("7:00 am",300,250));
         movieTimeList.add(new MovieTime("10:00 am",300,120));
         movieTimeList.add(new MovieTime("12:00 pm",300,60));
